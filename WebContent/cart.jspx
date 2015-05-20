@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:f="http://java.sun.com/jsp/jstl/fmt" version="2.0">
+	<jsp:directive.page contentType="text/html; charset=UTF-8"
+		pageEncoding="UTF-8" session="false" />
+	<jsp:output doctype-root-element="html"
+		doctype-public="-//W3C//DTD XHTML 1.0 Transitional//EN"
+		doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"
+		omit-xml-declaration="true" />
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta name="description" content=""/>
+    <meta name="author" content=""/>
+    <title>Cart | E-Shopper</title>
+	<link href="${pageContext.request.contextPath}/css/bootstrap.min.css" rel="StyleSheet" type="text/css" />
+	<link href="${pageContext.request.contextPath}/css/main.css" rel="StyleSheet" type="text/css" /> 
+	<link href="${pageContext.request.contextPath}/css/font-awesome.min.css" rel="stylesheet" type="text/css"/>
+	<script type="text/javascript" src="${pageContext.request.contextPath}/js/main.js">;</script>
+</head>
+<body>
+		<section id="cart_items">
+			<div class="container">
+				<div class="breadcrumbs">
+					<ol class="breadcrumb">
+						<li><a href="${pageContext.request.contextPath}/eFoods/">Home</a></li>
+						<li class="active">Shopping Cart</li>
+					</ol>
+				</div>
+				<c:if test="${itemremoved}">
+							<p>Item is removed to cart</p>
+						</c:if>
+				<div class="table-responsive cart_info">
+					<table class="table table-condensed">
+						<thead>
+							<tr class="cart_menu">
+								<td class="itemID">ID</td>
+								<td class="description">Item</td>
+								<td class="price">Price</td>
+								<td class="quantity">Quantity</td>
+								<td class="unit">Unit</td>
+								<td class="total">Total</td>
+								<td></td>
+							</tr>
+						</thead>
+						<tbody>
+							<div class="col-md-7" id="suggested_items"><tr>
+								&#160;
+							</tr></div>
+							<c:forEach items="${itemlist}" var="item">
+							<tr>
+								<td class="cart_item_ID">
+									<p>${item.key.id }</p>
+								</td>
+								<td class="cart_description">
+									<h4>
+										${item.key.name }
+									</h4>
+								</td>
+								<td class="cart_price">
+									<p id="${item.key.id}_price"><f:formatNumber type="currency">${item.key.price }</f:formatNumber></p>
+								</td>
+								<td class="cart_description">
+									<h4>
+										${item.key.unit }
+									</h4>
+								</td>
+								<td class="item_quantity">
+									<div class="item_quantity_button">
+										<button class="item_quantity_up" onclick="CartincreaseQuantity(this,${item.key.price})" value="${item.key.id}"> + </button>
+										<input
+											disabled = "true" class="cart_quantity_input" type="text" id="${item.key.id }_item_quantity"
+											value="${item.value }" autocomplete="off" size="2" /> 
+											<button class="item_quantity_down" onclick="CartdecreaseQuantity(this,${item.key.price})" value="${item.key.id}"> - </button>
+									</div>
+								</td>
+								<td class="cart_total">
+									<p class="cart_total_price" id="${item.key.id}_total"><f:formatNumber type="currency">${item.key.price * item.value}</f:formatNumber></p>
+								</td>
+								<td class="cart_delete">
+									<form name="${item.key.id}_submit">
+										<input type="hidden" class="cart_quantity_delete" name="removeItem" value="${item.key.id }"/>
+										<button class="cart_quantity_delete" href=""><i class="fa fa-times"></i></button>
+									</form>
+								</td>
+							</tr>
+							</c:forEach>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</section> <!--/#cart_items-->
+		<section id="do_action">
+			<div class="container">
+				<div class="heading">
+					<h3>What would you like to do next?</h3>
+					<p>Review Payment</p>
+				</div>
+				<div class="row">
+					<div class="col-sm-6">
+						<div class="total_area">
+							<ul>
+								<li>
+									Cart Sub Total 
+									<span><f:formatNumber type="currency">${subTotal }</f:formatNumber></span>
+								</li>
+								<li>Taxes
+									<span><f:formatNumber type="currency">${tax }</f:formatNumber></span>
+								</li>
+								<li>Shipping Cost 
+									<span><f:formatNumber type="currency">${shipping }</f:formatNumber></span>
+								</li>
+								<li>Total
+									<span><f:formatNumber type="currency">${grandTotal }</f:formatNumber></span>
+								</li>
+							</ul>
+							<form name="submit">
+								<c:forEach items="${itemlist}" var="item">
+									<input type="hidden" name="item" value = "${item.key.id}"/>
+									<input type="hidden" name="quantity_${item.key.id}" value = "${item.value}"/>
+								</c:forEach>
+								<input type="submit" name="updateItems" value="Update" class="btn btn-default update" href="" />
+								<a class="btn btn-default check_out" href="${pageContext.request.contextPath}/eFoods/checkout/">Check Out</a>
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+		</section><!--/#do_action-->
+</body>
+</html>
+</jsp:root>

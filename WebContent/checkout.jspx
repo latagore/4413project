@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" version="2.0"
+			xmlns:c="http://java.sun.com/jsp/jstl/core"
+		    xmlns:f="http://java.sun.com/jsp/jstl/fmt">
+	<jsp:directive.page contentType="text/html; charset=UTF-8" 
+		pageEncoding="UTF-8" session="false"/>
+	<jsp:output doctype-root-element="html"
+		doctype-public="-//W3C//DTD XHTML 1.0 Transitional//EN"
+		doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"
+		omit-xml-declaration="true" />
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta name="description" content=""/>
+    <meta name="author" content=""/>
+    <title>Checkout | E-Shopper</title>
+    <link href="${pageContext.request.contextPath}/css/bootstrap.min.css" rel="stylesheet"/>
+    <link href="${pageContext.request.contextPath}/css/font-awesome.min.css" rel="stylesheet"/>
+	<link href="${pageContext.request.contextPath}/css/main.css" rel="stylesheet"/>
+</head>
+<body>
+	<section id="cart_items">
+		<div class="container">
+			<div class="breadcrumbs">
+				<ol class="breadcrumb">
+				  <li><a href="${pageContext.request.contextPath}/eFoods/">Home</a></li>
+				  <li class="active">Check out</li>
+				</ol>
+			</div><!--/breadcrums-->
+			
+			<div class="review-payment">
+				<h2>Review and Payment</h2>
+			</div>
+
+			<div class="table-responsive cart_info">
+				<table class="table table-condensed">
+					<thead>
+						<tr class="cart_menu">
+							<td class="itemID">ID</td>
+							<td class="description">Item</td>
+							<td class="price">Price</td>
+							<td class="unit">Unit</td>
+							<td class="quantity">Quantity</td>
+							<td class="total">Total</td>
+							<td></td>
+						</tr>
+					</thead>
+					<tbody>
+						<c:forEach items="${itemlist}" var="item">
+							<tr>
+								<td class="cart_item_ID">
+									<p>${item.key.id }</p>
+								</td>
+								<td class="cart_description">
+									<h4>
+										${item.key.name }
+									</h4>
+								</td>
+								<td class="cart_price">
+									<p id="${item.key.id}_price"><f:formatNumber type="currency">${item.key.price }</f:formatNumber></p>
+								</td>
+								<td class="cart_description">
+									<h4>
+										${item.key.unit }
+									</h4>
+								</td>
+								<td class="item_quantity">
+									<div class="item_quantity_button">
+										<input
+											disabled = "true" class="cart_quantity_input" type="text" id="${item.key.id }_item_quantity"
+											value="${item.value }" autocomplete="off" size="2" /> 
+									</div>
+								</td>
+								<td class="cart_total">
+									<p class="cart_total_price" id="${item.key.id}_total"><f:formatNumber type="currency">${item.key.price * item.value}</f:formatNumber></p>
+								</td>
+							</tr>
+						</c:forEach>
+						<tr>
+							<td colspan="4">&#160;</td>
+							<td colspan="2">
+								<table class="table table-condensed total-result">
+									<tr>
+										<td>Cart Sub Total</td>
+										<td><f:formatNumber type="currency">${subTotal }</f:formatNumber></td>
+									</tr>
+									<tr>
+										<td>Taxes</td>
+										<td><f:formatNumber type="currency">${tax }</f:formatNumber></td>
+									</tr>
+									<tr class="shipping-cost">
+										<td>Shipping Cost</td>
+										<td><f:formatNumber type="currency">${shipping }</f:formatNumber></td>										
+									</tr>
+									<tr>
+										<td>Total</td>
+										<td><span><f:formatNumber type="currency">${grandTotal }</f:formatNumber></span></td>
+									</tr>
+								</table>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<div class="payment-options">
+				<form name="submit">
+					<input type="submit" name="checkout" value="Checkout" class="btn btn-default update" />
+				</form>
+			</div>
+		</div>
+	</section> <!--/#cart_items-->
+</body>
+</html>
+</jsp:root>
